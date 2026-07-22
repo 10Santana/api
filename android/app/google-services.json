@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "564687588404",
+    "project_id": "ailton-dez-app",
+    "storage_bucket": "ailton-dez-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564687588404:android:c6f1be2e89d9ce089ece61",
+        "android_client_info": {
+          "package_name": "com.example.ailton_dez"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcqNtwuc-qx4V6cWQDTyxX0yPftsQ8ya0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
