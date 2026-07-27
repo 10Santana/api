@@ -129,7 +129,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
   final _dataNascimentoController = TextEditingController();
-  String _tipoAdminSelecionado = 'nenhum';
 
   Future<void> _escolherDataNascimento(BuildContext context) async {
     final DateTime? dataEscolhida = await showDatePicker(
@@ -170,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'nomeCompleto': _nomeCompletoController.text.trim(),
         'email': _emailController.text.trim(),
         'dataNascimento': _dataNascimentoController.text.trim(),
-        'tipoAdmin': _tipoAdminSelecionado,
+        'tipoAdmin': 'cultos',
         'criadoEm': FieldValue.serverTimestamp(),
       });
 
@@ -239,26 +238,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
-                DropdownButtonFormField<String>(
-                  value: _tipoAdminSelecionado,
-                  dropdownColor: const Color(0xFF2D2D2D),
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    labelText: 'Nível de Acesso',
-                    labelStyle: TextStyle(color: Colors.grey),
-                  ),
-                  items: const [
-                    DropdownMenuItem(value: 'nenhum', child: Text('Membro Comum')),
-                    DropdownMenuItem(value: 'cultos', child: Text('Admin 2 (Apenas Cultos)')),
-                    DropdownMenuItem(value: 'principal', child: Text('Admin 1 (Principal - Tudo)')),
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      _tipoAdminSelecionado = value!;
-                    });
-                  },
-                ),
                 const SizedBox(height: 30),
                 SizedBox(
                   width: double.infinity,
@@ -311,7 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
         final doc = await FirebaseFirestore.instance.collection('usuarios').doc(user.uid).get();
         if (doc.exists && doc.data() != null) {
           final data = doc.data()!;
-          // Tenta ler de várias chaves possíveis para garantir que ache o nome
           String nomeEncontrado = data['nomeCompleto'] ?? data['nome'] ?? data['displayName'] ?? '';
           if (nomeEncontrado.isEmpty && user.displayName != null) {
             nomeEncontrado = user.displayName!;
@@ -473,7 +451,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         if (context.mounted) Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(docId == null ? "Aviso adicionado com sucesso!" : "Aviso atualizado com sucesso!")));
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(docId == null ? "Aviso adicionado com sucesso!" : "Aviso atualizado com sucesso!")));
+                        }
                       } catch (e) {
                         if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Erro ao salvar aviso: $e")));
                       }
